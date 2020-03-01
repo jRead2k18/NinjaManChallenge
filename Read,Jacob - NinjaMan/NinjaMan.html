@@ -113,8 +113,7 @@
 	}
 	var score = 0, sushiPoints = 50, onigiriPoints = 100;
 	var movementPos = 0;
-	var downArray = [0,1,2,3,4,5,6,7], leftArray = [8,9], upArray = [10,11,12,13,14,15,16,17],
-		rightArray = [18,19];
+	var headingUpPinky = false, headingRightPinky = false, headingUpBluey = false, headingRightBluey = false;
 
 	function drawWorld(){
 		output = "";
@@ -143,6 +142,81 @@
 		
 		document.getElementById('bluey').style.top = bluey.y * 40 + 'px';
 		document.getElementById('bluey').style.left = bluey.x * 40 + 'px';
+	}
+
+	function directionToMove(ghostName){
+		if(world[ghostName.y + 1][ghostName.x] != 1){ // DOWN
+			if(ghostName == pinky){
+				if(headingUpPinky != true){
+					headingRightPinky = false;
+					return "Down";					
+				}
+				// SETS PINKY HEADING RIGHT = FALSE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE BOTTOM, IT CAN START MOVING TO THE LEFT
+			}
+			if(ghostName == bluey){
+				if(headingUpBluey != true){
+					headingRightBluey = false;
+					return "Down";					
+				}
+				// SETS BLUEY HEADING RIGHT = FALSE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE BOTTOM, IT CAN START MOVING TO THE LEFT
+			}
+		}
+		else if(world[ghostName.y][ghostName.x - 1] != 1){ // LEFT
+			if(ghostName == pinky){
+				if(headingRightPinky != true){
+					headingUpPinky = true;
+					return "Left";
+				}
+				// SETS PINKY HEADING UP = TRUE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE LEFT, IT CAN START MOVING UP
+			}
+			if(ghostName == bluey){
+				if(headingRightBluey != true){
+					headingUpBluey = true;
+					return "Left";
+				}
+				// SETS BLUEY HEADING UP = TRUE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE LEFT, IT CAN START MOVING UP
+			}
+		}
+		else if(world[ghostName.y - 1][ghostName.x] != 1){ // UP
+			if(ghostName == pinky){
+				if(headingUpPinky != false){
+					headingRightPinky = true;
+					return "Up";
+				}
+				// SETS PINKY HEADING RIGHT = TRUE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE TOP, IT CAN START MOVING TO THE RIGHT
+			}
+			if(ghostName == bluey){
+				if(headingUpBluey != false){
+					headingRightBluey = false;
+					return "Up";
+				}
+				// SETS BLUEY HEADING RIGHT = TRUE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE TOP, IT CAN START MOVING TO THE RIGHT
+			}
+		}
+		else if(world[ghostName.y][ghostName.x + 1] != 1){ // RIGHT
+			if(ghostName == pinky){
+				if(headingRightPinky != false){
+					headingUpPinky = false;
+					return "Right";					
+				}
+				// SETS PINKY HEADING UP = FALSE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE RIGHT, IT CAN START MOVING DOWN
+			}
+			if(ghostName == bluey){
+				if(headingRightBluey != false){
+					headingUpBluey = false;
+					return "Right";					
+				}
+				// SETS BLUEY HEADING UP = FALSE BEFORE, THAT WAY WHEN IT GETS
+				// TO THE RIGHT, IT CAN START MOVING DOWN
+			}
+		}
 	}
 
 	document.onkeydown = function(e){
@@ -177,20 +251,20 @@
 					world[ninjaman.y][ninjaman.x] = 0	
 		}
 
-			if (movementPos = downArray[movementPos]){
-				//pinky.y++;
+			if (directionToMove(pinky) == "Down"){ // RIGHT
+				pinky.y++;
 				console.log(movementPos + " down");
 			}
-			else if (movementPos = leftArray[movementPos]){
-				//pinky.x--;
+			else if (directionToMove(pinky) == "Left"){ // LEFT
+				pinky.x--;
 				console.log(movementPos + " left");
 			}
-			else if (movementPos = upArray[movementPos]){
-				//pinky.y--;
+			else if (directionToMove(pinky) == "Up"){ // UP
+				pinky.y--;
 				console.log(movementPos + " up");
 			}
-			else if (movementPos = rightArray[movementPos]){
-				//pink.x++;
+			else if (directionToMove(pinky) == "Right"){ // RIGHT
+				pinky.x++;
 				console.log(movementPos + " right");
 			}
 
