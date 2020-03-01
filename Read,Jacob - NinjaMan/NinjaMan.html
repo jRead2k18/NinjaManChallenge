@@ -147,6 +147,7 @@
 	function directionToMove(ghostName){
 		if(world[ghostName.y + 1][ghostName.x] != 1){ // DOWN
 			if(ghostName == pinky){
+				console.log("I'm stuck");
 				if(headingUpPinky != true){
 					headingRightPinky = false;
 					return "Down";					
